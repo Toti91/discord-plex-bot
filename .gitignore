@@ -5,6 +5,8 @@
 /dist
 /tmp
 /out-tsc
+/src/config.json
+/src/media_queue.json
 
 # dependencies
 node_modules/
