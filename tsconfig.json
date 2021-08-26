@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "build/src",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "inlineSourceMap": true,
+    "lib": ["es5", "es6"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "typeRoots": ["node_modules/@types"],
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@app/*": ["*"],
+      "@app/types": ["types/index.ts"],
+      "@app/events": ["events/index.ts"],
+      "@app/commands": ["commands/index.ts"],
+      "@app/helpers": ["helpers/index.ts"],
+      "@app/services": ["services/index.ts"],
+      "@app/constants": ["constants/index.ts"],
+      "@app/tasks": ["tasks/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "index.d.ts"],
+  "exclude": ["node_modules", "build"]
+}
