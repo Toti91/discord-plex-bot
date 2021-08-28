@@ -1,7 +1,8 @@
 import { AppConfig, PlexConfig } from '@app/types'
 import PlexServer from 'plex-api'
 
-const MAX_RESULTS = 20
+const MAX_RESULTS_MOVIES = 20
+const MAX_RESULTS_SERIES = 100
 
 export class PlexClientService {
   private config: PlexConfig
@@ -20,7 +21,7 @@ export class PlexClientService {
       .query(`/library/sections/${this.config.movieFolderKey}/recentlyAdded`)
       .then((result) => {
         const results = result.MediaContainer.Metadata as { title: string }[]
-        return results.slice(0, MAX_RESULTS).map((x) => x.title)
+        return results.slice(0, MAX_RESULTS_MOVIES).map((x) => x.title)
       })
   }
 
@@ -28,8 +29,12 @@ export class PlexClientService {
     return this.api
       .query(`/library/sections/${this.config.seriesFolderKey}/recentlyAdded`)
       .then((result) => {
-        const results = result.MediaContainer.Metadata as { title: string }[]
-        return results.slice(0, MAX_RESULTS).map((x) => x.title)
+        const results = result.MediaContainer.Metadata as {
+          grandparentTitle: string
+        }[]
+        return results
+          .slice(0, MAX_RESULTS_SERIES)
+          .map((x) => x.grandparentTitle)
       })
   }
 }

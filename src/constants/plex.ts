@@ -7,3 +7,8 @@ export const SONARR_ADD_OPTIONS = {
   searchForMissingEpisodes: true,
   ignoreEpisodesWithFiles: false,
 }
+
+export const ADD_BTN = 'ADD_BTN'
+export const CANCEL_BTN = 'CANCEL_BTN'
+
+export const REPLY_TIMEOUT = 15000

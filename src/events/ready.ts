@@ -8,5 +8,6 @@ export default (client: BotClient) => {
       task.run()
     }
     console.log('Ready!\n')
+    // console.log(client.guilds.cache.first()?.emojis.cache)
   }
 }

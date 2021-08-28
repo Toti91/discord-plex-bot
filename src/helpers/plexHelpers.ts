@@ -1,7 +1,10 @@
+import { ADD_BTN, CANCEL_BTN } from '@app/constants'
 import { PlexMedia, PlexMovie, PlexSeries } from '@app/types'
 import {
   EmbedFieldData,
   Message,
+  MessageActionRow,
+  MessageButton,
   MessageEmbed,
   MessageReaction,
   User,
@@ -41,6 +44,55 @@ export const resolvePlexImage = (media: PlexMedia) => {
   else return media.images.shift()?.url ?? ''
 }
 
+export const getButtons = ({ disabled } = { disabled: false }) => {
+  const addBtn = new MessageButton()
+    .setCustomId(ADD_BTN)
+    .setLabel('Bæta við')
+    .setStyle('PRIMARY')
+
+  const cancelButton = new MessageButton()
+    .setCustomId(CANCEL_BTN)
+    .setLabel('Hætta við')
+    .setStyle('SECONDARY')
+
+  if (disabled) {
+    addBtn.setDisabled()
+    cancelButton.setDisabled()
+  }
+
+  return new MessageActionRow().addComponents(addBtn, cancelButton)
+}
+
+export const getCanceledButton = (text: string) => {
+  return new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId(CANCEL_BTN)
+      .setLabel(text)
+      .setStyle('SECONDARY')
+      .setDisabled(),
+  )
+}
+
+export const getSuccessButton = (text: string) => {
+  return new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId(ADD_BTN)
+      .setLabel(text)
+      .setStyle('SUCCESS')
+      .setDisabled(),
+  )
+}
+
+export const getErrorButton = (text: string) => {
+  return new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId(CANCEL_BTN)
+      .setLabel(text)
+      .setStyle('DANGER')
+      .setDisabled(),
+  )
+}
+
 export const getPlexEmbed = (media: PlexMedia, fields: EmbedFieldData[]) => {
   const embed = new MessageEmbed()
   embed.setColor('#e7a50a')
@@ -66,13 +118,7 @@ export const getPlexMovieEmbedFields = (movie: PlexMovie): EmbedFieldData[] => {
     { name: 'Lengd', value: padBottom(runtime), inline: true },
     { name: 'Framleiðandi', value: padBottom(movie.studio), inline: true },
     { name: 'Trailer', value: padBottom(trailerUrl), inline: true },
-    movie.sizeOnDisk
-      ? {
-          name: 'Stærð',
-          value: padBottom(formatBytes(movie.sizeOnDisk)),
-          inline: true,
-        }
-      : EMPTY_FIELD,
+    EMPTY_FIELD,
   ]
 }
 
