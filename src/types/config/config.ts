@@ -3,15 +3,16 @@ export interface PlexConfig {
   roleId: string
   channelId: string
   requestChannelId: string
-  clientUrl: string
-  clientToken: string
+  baseUrl: string
   clientPort: number
+  clientToken: string
   trueNasUrl: string
   trueNasToken: string
+  trueNasPort: number
   radarrToken: string
-  radarrUrl: string
+  radarrPort: number
   sonarrToken: string
-  sonarrUrl: string
+  sonarrPort: number
   movieFolderKey: string
   seriesFolderKey: string
 }

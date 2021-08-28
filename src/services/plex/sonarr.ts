@@ -1,11 +1,5 @@
 import { ROOT_FOLDER_PATH, SONARR_ADD_OPTIONS } from '@app/constants'
-import {
-  AppConfig,
-  PlexConfig,
-  PlexSeries,
-  PVRError,
-  PVRErrorCodes,
-} from '@app/types'
+import { AppConfig, PlexConfig, PlexSeries, PVRError } from '@app/types'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 
 export class SonarrService {
@@ -15,7 +9,7 @@ export class SonarrService {
   constructor(config: AppConfig) {
     this.config = config.plex
     this.api = axios.create({
-      baseURL: this.config.sonarrUrl,
+      baseURL: `http://${this.config.baseUrl}:${this.config.sonarrPort}/api`,
       timeout: 15000,
       params: { apiKey: this.config.sonarrToken },
     })

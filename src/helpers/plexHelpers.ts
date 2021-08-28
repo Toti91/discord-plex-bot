@@ -1,4 +1,9 @@
-import { ADD_BTN, CANCEL_BTN } from '@app/constants'
+import {
+  ADD_BTN,
+  CANCEL_BTN,
+  PORT_PING_SETTING,
+  SETTINGS_MENU,
+} from '@app/constants'
 import { PlexMedia, PlexMovie, PlexSeries } from '@app/types'
 import {
   EmbedFieldData,
@@ -7,9 +12,9 @@ import {
   MessageButton,
   MessageEmbed,
   MessageReaction,
+  MessageSelectMenu,
   User,
 } from 'discord.js'
-import { formatBytes } from './numberHelpers'
 
 const EMBED_THUMBNAIL = 'https://i.redd.it/5czvsiboj9g51.png'
 const EMBED_AUTHOR_ICON =
@@ -90,6 +95,22 @@ export const getErrorButton = (text: string) => {
       .setLabel(text)
       .setStyle('DANGER')
       .setDisabled(),
+  )
+}
+
+export const getSettingsMenu = (notify?: boolean) => {
+  return new MessageActionRow().addComponents(
+    new MessageSelectMenu()
+      .setCustomId(SETTINGS_MENU)
+      .setPlaceholder('Veldu stillingu.')
+      .addOptions([
+        {
+          label: `Server ping (${notify ? 'virkt' : 'óvirkt'})`,
+          description: 'Pingar serverinn og lætur vita ef hann svarar ekki.',
+          value: PORT_PING_SETTING,
+          emoji: '📢',
+        },
+      ]),
   )
 }
 

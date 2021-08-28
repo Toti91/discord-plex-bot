@@ -32,7 +32,8 @@
       "@app/helpers": ["helpers/index.ts"],
       "@app/services": ["services/index.ts"],
       "@app/constants": ["constants/index.ts"],
-      "@app/tasks": ["tasks/index.ts"]
+      "@app/tasks": ["tasks/index.ts"],
+      "@app/handlers": ["handlers/index.ts"]
     }
   },
   "include": ["**/*.ts", "index.d.ts"],

@@ -19,7 +19,7 @@ export class RadarrService {
   constructor(config: AppConfig) {
     this.config = config.plex
     this.api = axios.create({
-      baseURL: this.config.radarrUrl,
+      baseURL: `http://${this.config.baseUrl}:${this.config.radarrPort}/api`,
       timeout: 15000,
       params: { apiKey: this.config.radarrToken },
     })

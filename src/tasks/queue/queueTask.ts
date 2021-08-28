@@ -2,7 +2,7 @@ import { BotClient } from '@app/client'
 import { FIVE_MINUTES_IN_MS, MEDIA_QUEUE_FILE_NAME } from '@app/constants'
 import { mapMediaItemsToRecord, mention } from '@app/helpers'
 import { FileService, PlexClientService } from '@app/services'
-import { MediaFile, MediaType } from '@app/types'
+import { MediaFile, MediaType, Queue } from '@app/types'
 import { Task } from '../task'
 
 const mediaTypeMapper = {
@@ -25,11 +25,11 @@ export default class QueueTask extends Task {
   }
 
   private async checker() {
-    let queue = await this.fileService.getQueueFromFile()
+    let queue = await this.fileService.getDataFromFile<Queue>()
     if (queue.length === 0) return
 
-    const found: MediaFile[] = []
-    const prune: MediaFile[] = []
+    const found: Queue = []
+    const prune: Queue = []
     const movies = await this.plexService.getRecentlyAddedMovies()
     const series = await this.plexService.getRecentlyAddedSeries()
 
@@ -59,7 +59,7 @@ export default class QueueTask extends Task {
     }
   }
 
-  private async maybePruneItem(item: MediaFile, queue: MediaFile[]) {
+  private async maybePruneItem(item: MediaFile, queue: Queue) {
     const dateAdded = new Date(item.date)
     const aWeekAgo = new Date()
     aWeekAgo.setDate(aWeekAgo.getDate() - 7)
@@ -69,10 +69,7 @@ export default class QueueTask extends Task {
     }
   }
 
-  private async notifyAdminOfPrunedItem(
-    items: MediaFile[],
-    queue: MediaFile[],
-  ) {
+  private async notifyAdminOfPrunedItem(items: Queue, queue: Queue) {
     const admin = mention(this.client.config.plex.adminId)
     const channelId = this.client.config.plex.requestChannelId
     const channel = this.client.getTextChannelById(channelId)
@@ -100,7 +97,7 @@ export default class QueueTask extends Task {
     await this.fileService.writeQueueToFile(removed)
   }
 
-  private async notifyUsersOfFoundItems(items: MediaFile[]) {
+  private async notifyUsersOfFoundItems(items: Queue) {
     const record = mapMediaItemsToRecord(items)
     const channelId = this.client.config.plex.channelId
     const channel = this.client.getTextChannelById(channelId)
@@ -133,11 +130,7 @@ export default class QueueTask extends Task {
     }
   }
 
-  private removeMediaFromFile(
-    title: string,
-    type: MediaType,
-    queue: MediaFile[],
-  ) {
+  private removeMediaFromFile(title: string, type: MediaType, queue: Queue) {
     console.log(`Removing ${title} from file.`)
     return queue.filter((x) => !(x.title === title && x.type === type))
   }

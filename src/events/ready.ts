@@ -1,4 +1,5 @@
 import { BotClient } from '@app/client'
+import { MessageActionRow, MessageButton } from 'discord.js'
 
 export default (client: BotClient) => {
   if (client.user) {

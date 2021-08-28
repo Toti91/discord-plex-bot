@@ -7,6 +7,7 @@
 /out-tsc
 /src/config.json
 /src/media_queue.json
+/src/settings.json
 
 # dependencies
 node_modules/

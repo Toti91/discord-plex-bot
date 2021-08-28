@@ -11,7 +11,7 @@ export class PlexClientService {
   constructor(config: AppConfig) {
     this.config = config.plex
     this.api = new PlexServer({
-      hostname: this.config.clientUrl,
+      hostname: this.config.baseUrl,
       token: this.config.clientToken,
     })
   }
