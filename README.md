@@ -1,6 +1,18 @@
 # discord-plex-bot
 
-To run this you will need to have two files in the /src folder
+A Discord bot that uses Radarr and Sonarr to request movies / tv-shows on your Plex server.
+
+Features:
+- Add series or movies
+- Let's you know when the media is available on your Plex server
+- Let's Plex admin know if the media was not added
+- Pin's ports on the server and let's admin know if they don't respond.
+
+## Example
+
+![image](https://user-images.githubusercontent.com/16031201/131261376-e65da8aa-ea5f-43e2-ae6a-8d12ea988370.png)
+
+## To run this you will need to have these files in the /src folder
 
 ### config.json
 ```json
@@ -13,20 +25,29 @@ To run this you will need to have two files in the /src folder
     "roleId": "Discord role id (string)",
     "channelId": "Discord channel id (string)",
     "requestChannelId": "Discord request-channel id (string)",
-    "clientUrl": "Plex server IP",
+    "baseUrl": "Base IP address of server e.g. xx.xx.xx.xx",
     "clientPort": 32400,
     "clientToken": "Plex server auth token",
-    "trueNasUrl": "TrueNAS URL",
+    "trueNasUrl": "api/v2.0",
     "trueNasToken": "TrueNAS auth token",
-    "radarrUrl": "Radarr URL",
+    "trueNasPort": 80,
+    "radarrPort": 7878,
     "radarrToken": "Radarr api key",
-    "sonarrUrl": "Sonarr URL",
+    "sonarrPort": 8989,
     "sonarrToken": "Sonarr api key",
     "movieFolderKey": "Your movie folder key",
     "seriesFolderKey": "Your series folder key"
   }
 }
 ```
+
+### settings.json
+```json
+ {
+  "shouldPing": true,
+  "users": {}
+ }
+``` 
 
 ### media_queue.json (empty array)
 ```json
