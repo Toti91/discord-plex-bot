@@ -1,4 +1,5 @@
 export * from './plex/radarr'
 export * from './plex/sonarr'
 export * from './plex/client'
+export * from './plex/server'
 export * from './sys/fileService'
