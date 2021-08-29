@@ -12,6 +12,11 @@ Features:
 
 ![image](https://user-images.githubusercontent.com/16031201/131261376-e65da8aa-ea5f-43e2-ae6a-8d12ea988370.png)
 
+## Start bot
+```
+yarn start
+```
+
 ## To run this you will need to have these files in the /src folder
 
 ### config.json
