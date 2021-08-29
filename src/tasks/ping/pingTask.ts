@@ -24,7 +24,6 @@ export default class PingTask extends Task {
     setInterval(this.checker.bind(this), THIRTY_MINUTES_IN_MS)
   }
 
-  // Pings ports and lets admin know if the don't respond.
   private async checker() {
     const settings = await this.fileService.getDataFromFile<Settings>()
     if (!settings.shouldPing) return

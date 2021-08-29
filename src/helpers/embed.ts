@@ -32,26 +32,30 @@ export const resolvePlexImage = (media: PlexMedia) => {
   else return media.images.shift()?.url ?? ''
 }
 
-export const getPlexEmbed = (media: PlexMedia, fields: EmbedFieldData[]) => {
+export const getPlexEmbed = (
+  media: PlexMedia,
+  author: string,
+  fields: EmbedFieldData[],
+) => {
   const embed = new MessageEmbed()
   embed.setColor('#e7a50a')
   embed.setTitle(media.title)
   embed.setURL(`https://www.imdb.com/title/${media.imdbId}`)
   embed.setDescription(padBottom(formatOverview(media.overview)))
   embed.setImage(resolvePlexImage(media))
-  embed.setAuthor('Plexarinn', EMBED_AUTHOR_ICON)
+  embed.setAuthor(author, EMBED_AUTHOR_ICON)
   embed.setThumbnail(EMBED_THUMBNAIL)
   embed.setFields(fields)
   embed.setTimestamp()
   return embed
 }
 
-export const getInfoEmbed = (info: ServerInformation) => {
+export const getInfoEmbed = (info: ServerInformation, author: string) => {
   const embed = new MessageEmbed()
   embed.setColor('#107ab0')
   embed.setTitle('Plex Info')
   embed.setDescription(padBottom('Upplýsingar um serverinn.'))
-  embed.setAuthor('Plexarinn', EMBED_AUTHOR_ICON)
+  embed.setAuthor(author, EMBED_AUTHOR_ICON)
   embed.setThumbnail(TRUENAS_THUMBNAIL)
   embed.setFields(getInfoFields(info))
   embed.setTimestamp()

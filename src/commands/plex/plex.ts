@@ -1,22 +1,19 @@
 import { BotClient } from '@app/client'
 import {
-  ADD_BTN,
   CANCEL_BTN,
   MEDIA_QUEUE_FILE_NAME,
   REPLY_TIMEOUT,
 } from '@app/constants'
 import {
+  getBotName,
   getButtons,
   getCanceledButton,
   getErrorButton,
   getPlexEmbed,
   getPlexMovieEmbedFields,
-  getPlexReactionOptions,
   getPlexSeriesEmbedFields,
   getSuccessButton,
   sendErrorMessage,
-  sendInfoMessage,
-  sendSuccessMessage,
 } from '@app/helpers'
 import { FileService, RadarrService, SonarrService } from '@app/services'
 import { MediaType } from '@app/types'
@@ -25,9 +22,6 @@ import {
   GuildMember,
   Interaction,
   Message,
-  MessageActionRow,
-  MessageButton,
-  User,
 } from 'discord.js'
 import { Command } from '../command'
 
@@ -131,7 +125,11 @@ export default class PlexCommand extends Command {
       }
 
       const movie = results.data[0]
-      const embed = getPlexEmbed(movie, getPlexMovieEmbedFields(movie))
+      const embed = getPlexEmbed(
+        movie,
+        getBotName(this.client),
+        getPlexMovieEmbedFields(movie),
+      )
       const row = getButtons()
 
       const reply = await msg.reply({
@@ -197,7 +195,11 @@ export default class PlexCommand extends Command {
       }
 
       const series = results.data[0]
-      const embed = getPlexEmbed(series, getPlexSeriesEmbedFields(series))
+      const embed = getPlexEmbed(
+        series,
+        getBotName(this.client),
+        getPlexSeriesEmbedFields(series),
+      )
       const row = getButtons()
 
       const reply = await msg.reply({

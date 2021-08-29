@@ -1,3 +1,4 @@
+import { BotClient } from '@app/client'
 import {
   ADD_BTN,
   CANCEL_BTN,
@@ -26,6 +27,10 @@ const plexReactionFilter = (
 
 export const mention = (id: string) => {
   return `<@${id}>`
+}
+
+export const getBotName = (client: BotClient) => {
+  return client.user?.username ?? 'Plexarinn'
 }
 
 export const getButtons = ({ disabled } = { disabled: false }) => {

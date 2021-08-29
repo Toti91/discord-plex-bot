@@ -1,5 +1,5 @@
 import { BotClient } from '@app/client'
-import { getInfoEmbed } from '@app/helpers'
+import { getBotName, getInfoEmbed } from '@app/helpers'
 import { ServerService } from '@app/services'
 import { Message } from 'discord.js'
 import { Command } from '../command'
@@ -18,7 +18,7 @@ export default class PlexInfoCommand extends Command {
 
   async run(message: Message) {
     const information = await this.serverService.getServerInformation()
-    const embed = getInfoEmbed(information)
+    const embed = getInfoEmbed(information, getBotName(this.client))
     await message.channel.send({ embeds: [embed] })
   }
 }
