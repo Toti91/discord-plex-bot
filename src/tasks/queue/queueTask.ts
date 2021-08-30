@@ -61,31 +61,30 @@ export default class QueueTask extends Task {
 
   private async maybePruneItem(item: MediaFile, queue: Queue) {
     const dateAdded = new Date(item.date)
-    const aWeekAgo = new Date()
-    aWeekAgo.setDate(aWeekAgo.getDate() - 7)
+    const threeDaysAgo = new Date()
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
 
-    if (aWeekAgo.getTime() > dateAdded.getTime()) {
+    if (threeDaysAgo.getTime() > dateAdded.getTime()) {
       return item
     }
   }
 
   private async notifyAdminOfPrunedItem(items: Queue, queue: Queue) {
-    const admin = mention(this.client.config.plex.adminId)
     const channelId = this.client.config.plex.requestChannelId
     const channel = this.client.getTextChannelById(channelId)
     const format = (x: MediaFile) =>
       `**${x.title}** (${x.type === MediaType.MOVIE ? 'mynd' : 'þættir'})`
 
     if (items.length > 1) {
-      const message = `${admin}, það var óskað eftir þessu efni fyrir viku og það er ekki ennþá komið á Plex: ${items
+      const message = `Hmm, það var óskað eftir þessu efni fyrir 3 dögum og það er ekki ennþá komið á Plex: ${items
         .map((x) => format(x))
         .join(', ')}`
 
       await channel.send(message)
     } else {
       const item = items[0]
-      const seriesMsg = `${admin}, ${item.username} bað um þættina **${item.title}** fyrir viku, og þeir eru ekki enn komnir á Plex.\n*P.s. ætla að hætta tékka hvort þeir séu komnir.*`
-      const movieMsg = `${admin}, ${item.username} bað um myndina **${item.title}** fyrir viku, og hún er ekki enn komin á Plex.\n*P.s. ætla að hætta tékka hvort hún sé komin.*`
+      const seriesMsg = `Hmm, ${item.username} bað um þættina **${item.title}** fyrir 3 dögum, og þeir eru ekki enn komnir á Plex.\n*P.s. ætla að hætta tékka hvort þeir séu komnir.*`
+      const movieMsg = `Hmm, ${item.username} bað um myndina **${item.title}** fyrir 3 dögum, og hún er ekki enn komin á Plex.\n*P.s. ætla að hætta tékka hvort hún sé komin.*`
 
       await channel.send(item.type === MediaType.MOVIE ? movieMsg : seriesMsg)
     }
