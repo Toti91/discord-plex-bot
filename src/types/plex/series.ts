@@ -10,5 +10,6 @@ export interface PlexSeries extends PlexMedia {
   network: string
   tvdbId: number
   seriesType: string
+  firstAired: string
   seasons: PlexSeason[]
 }

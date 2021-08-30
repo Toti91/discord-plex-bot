@@ -1,4 +1,12 @@
-import { MediaFile, MediaType, PlexMedia, Queue, Settings } from '@app/types'
+import {
+  MediaFile,
+  MediaType,
+  PlexMedia,
+  PlexMovie,
+  PlexSeries,
+  Queue,
+  Settings,
+} from '@app/types'
 import { User } from 'discord.js'
 import { readFile, writeFile } from 'fs/promises'
 
@@ -47,7 +55,25 @@ export class FileService {
       type: mediaType,
       userMention: user.toString(),
       username: user.username,
-      date: new Date().toISOString(),
+      date: this.getMediaDate(media, mediaType).toISOString(),
     }
+  }
+
+  private getMediaDate(media: PlexMedia, type: MediaType) {
+    /* 
+      Checks if the media is not yet released.
+      If so return the release date, so that we don't prune
+      the item before it is released.
+    */
+
+    const today = new Date()
+    const mediaRelease = new Date(
+      type === MediaType.MOVIE
+        ? (media as PlexMovie).inCinemas
+        : (media as PlexSeries).firstAired,
+    )
+
+    if (mediaRelease.getTime() > today.getTime()) return mediaRelease
+    return today
   }
 }
