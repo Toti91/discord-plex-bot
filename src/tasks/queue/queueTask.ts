@@ -21,41 +21,46 @@ export default class QueueTask extends Task {
   }
 
   async run() {
+    this.checker()
     setInterval(this.checker.bind(this), FIVE_MINUTES_IN_MS)
   }
 
   private async checker() {
-    let queue = await this.fileService.getDataFromFile<Queue>()
-    if (queue.length === 0) return
+    try {
+      let queue = await this.fileService.getDataFromFile<Queue>()
+      if (queue.length === 0) return
 
-    const found: Queue = []
-    const prune: Queue = []
-    const movies = await this.plexService.getRecentlyAddedMovies()
-    const series = await this.plexService.getRecentlyAddedSeries()
+      const found: Queue = []
+      const prune: Queue = []
+      const movies = await this.plexService.getRecentlyAddedMovies()
+      const series = await this.plexService.getRecentlyAddedSeries()
 
-    for (const item of queue) {
-      if (item.type === MediaType.MOVIE && movies.includes(item.title)) {
-        queue = this.removeMediaFromFile(item.title, MediaType.MOVIE, queue)
-        found.push(item)
-        continue
+      for (const item of queue) {
+        if (item.type === MediaType.MOVIE && movies.includes(item.title)) {
+          queue = this.removeMediaFromFile(item.title, MediaType.MOVIE, queue)
+          found.push(item)
+          continue
+        }
+        if (item.type === MediaType.SERIES && series.includes(item.title)) {
+          queue = this.removeMediaFromFile(item.title, MediaType.SERIES, queue)
+          found.push(item)
+          continue
+        }
+
+        const toBePruned = await this.maybePruneItem(item, queue)
+        if (toBePruned) prune.push(toBePruned)
       }
-      if (item.type === MediaType.SERIES && series.includes(item.title)) {
-        queue = this.removeMediaFromFile(item.title, MediaType.SERIES, queue)
-        found.push(item)
-        continue
+
+      if (found.length > 0) {
+        await this.fileService.writeQueueToFile(queue)
+        await this.notifyUsersOfFoundItems(found)
       }
 
-      const toBePruned = await this.maybePruneItem(item, queue)
-      if (toBePruned) prune.push(toBePruned)
-    }
-
-    if (found.length > 0) {
-      await this.fileService.writeQueueToFile(queue)
-      await this.notifyUsersOfFoundItems(found)
-    }
-
-    if (prune.length > 0) {
-      this.notifyAdminOfPrunedItem(prune, queue)
+      if (prune.length > 0) {
+        this.notifyAdminOfPrunedItem(prune, queue)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

@@ -19,6 +19,7 @@ const init = async () => {
   client.loadEvents('./src/events')
   client.loadCommands('./src/commands')
   client.loadTasks('./src/tasks')
+  client.on('error', console.error)
   await client.login(config.token)
 }
 

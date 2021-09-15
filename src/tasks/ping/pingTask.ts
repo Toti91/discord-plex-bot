@@ -21,44 +21,51 @@ export default class PingTask extends Task {
   }
 
   async run() {
+    this.checker()
     setInterval(this.checker.bind(this), THIRTY_MINUTES_IN_MS)
   }
 
   private async checker() {
-    const settings = await this.fileService.getDataFromFile<Settings>()
-    if (!settings.shouldPing) return
+    try {
+      const settings = await this.fileService.getDataFromFile<Settings>()
+      if (!settings.shouldPing) return
 
-    const found: string[] = []
+      const found: string[] = []
 
-    for (const port of this.ports) {
-      const sock = new Socket()
-      sock.setTimeout(FIVE_SECONDS_IN_MS)
+      for (const port of this.ports) {
+        const sock = new Socket()
+        sock.setTimeout(FIVE_SECONDS_IN_MS)
 
-      sock
-        .on('connect', () => {
-          sock.destroy()
-        })
-        .on('error', () => {
-          found.push(`**${port}**`)
-        })
-        .on('timeout', () => {
-          found.push(`**${port}**`)
-        })
-        .connect(port, this.client.config.plex.baseUrl)
-    }
+        sock
+          .on('connect', () => {
+            sock.destroy()
+          })
+          .on('error', () => {
+            found.push(`**${port}**`)
+          })
+          .on('timeout', () => {
+            found.push(`**${port}**`)
+          })
+          .connect(port, this.client.config.plex.baseUrl)
+      }
 
-    if (found.length > 0) {
-      const admin = mention(this.client.config.plex.adminId)
-      const channelId = this.client.config.plex.channelId
-      const channel = this.client.getTextChannelById(channelId)
-      const message =
-        found.length === 1
-          ? `port ${found[0]} er niðri.`
-          : `port ${
-              found.length === 2 ? found.join('og ') : found.join(', ')
-            } eru niðri.`
+      if (found.length > 0) {
+        console.log('Some ports are down')
+        const admin = mention(this.client.config.plex.adminId)
+        const channelId = this.client.config.plex.channelId
+        const channel = this.client.getTextChannelById(channelId)
+        const message =
+          found.length === 1
+            ? `port ${found[0]} er niðri.`
+            : `port ${
+                found.length === 2 ? found.join('og ') : found.join(', ')
+              } eru niðri.`
 
-      await channel.send(`${admin}, ${message}`)
+        await channel.send(`${admin}, ${message}`)
+        return
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

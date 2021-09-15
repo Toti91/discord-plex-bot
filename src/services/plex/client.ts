@@ -13,6 +13,7 @@ export class PlexClientService {
     this.api = new PlexServer({
       hostname: this.config.baseUrl,
       token: this.config.clientToken,
+      port: this.config.clientPort,
     })
   }
 
