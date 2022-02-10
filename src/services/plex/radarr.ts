@@ -19,7 +19,7 @@ export class RadarrService {
   constructor(config: AppConfig) {
     this.config = config.plex
     this.api = axios.create({
-      baseURL: `http://${this.config.baseUrl}:${this.config.radarrPort}/api`,
+      baseURL: `http://${this.config.baseUrl}:${this.config.radarrPort}/api/v3`,
       timeout: 15000,
       params: { apiKey: this.config.radarrToken },
     })
@@ -57,7 +57,7 @@ export class RadarrService {
       titleSlug: movie.titleSlug,
       images: movie.images,
       year: movie.year,
-      rootFolderPath: ROOT_FOLDER_PATH,
+      rootFolderPath: '/mnt/media/Movies',
       addOptions: RADARR_ADD_OPTIONS,
     }
   }

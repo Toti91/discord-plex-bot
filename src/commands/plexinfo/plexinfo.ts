@@ -17,8 +17,12 @@ export default class PlexInfoCommand extends Command {
   }
 
   async run(message: Message) {
-    const information = await this.serverService.getServerInformation()
-    const embed = getInfoEmbed(information, getBotName(this.client))
-    await message.channel.send({ embeds: [embed] })
+    try {
+      const information = await this.serverService.getServerInformation()
+      const embed = getInfoEmbed(information, getBotName(this.client))
+      await message.channel.send({ embeds: [embed] })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

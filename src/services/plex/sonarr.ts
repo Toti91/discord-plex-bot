@@ -48,7 +48,7 @@ export class SonarrService {
       titleSlug: series.titleSlug,
       images: series.images,
       year: series.year,
-      rootFolderPath: ROOT_FOLDER_PATH,
+      rootFolderPath: '/mnt/media/Shows',
       addOptions: SONARR_ADD_OPTIONS,
     }
   }

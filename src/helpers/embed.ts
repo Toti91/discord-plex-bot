@@ -13,8 +13,10 @@ const padBottom = (content: string | number) => {
   return `${content}\n\u200B`
 }
 
-const formatOverview = (overview: string) =>
-  overview.length > 200 ? `${overview.slice(0, 200)}...` : `${overview}`
+const formatOverview = (overview: string) => {
+  if (!overview) return ''
+  return overview.length > 200 ? `${overview.slice(0, 200)}...` : `${overview}`
+}
 
 const getInfoFields = (information: ServerInformation): EmbedFieldData[] => {
   return [
